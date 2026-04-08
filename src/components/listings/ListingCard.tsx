@@ -14,10 +14,10 @@ export default function ListingCard({ listing }: ListingCardProps) {
   return (
     <Link
       href={`/studs/${listing.slug}`}
-      className="group block bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md hover:border-gray-300 transition-all"
+      className="group block bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg hover:border-gray-400 hover:-translate-y-0.5 transition-all duration-200"
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+      <div className="relative aspect-[3/2] bg-gray-100 overflow-hidden">
         {listing.primary_image_url ? (
           <Image
             src={listing.primary_image_url}
@@ -65,8 +65,14 @@ export default function ListingCard({ listing }: ListingCardProps) {
         </div>
 
         {listing.akc_registered && (
-          <p className="text-xs text-gray-400 mt-2">AKC Registered</p>
+          <p className="text-xs text-blue-600 font-medium mt-2">AKC Registered</p>
         )}
+
+        <div className="mt-3 pt-3 border-t border-gray-100">
+          <span className="text-xs font-semibold text-gray-400 group-hover:text-gray-700 transition-colors">
+            View Listing →
+          </span>
+        </div>
       </div>
     </Link>
   )

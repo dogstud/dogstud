@@ -45,6 +45,9 @@ export default function ListingFilters() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
+  const hasFilters = !!(searchParams.get('keyword') || searchParams.get('breed') || searchParams.get('state') || searchParams.get('availability'))
+  const clearFilters = () => router.push(pathname)
+
   const updateParam = useCallback(
     (key: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString())
@@ -64,7 +67,7 @@ export default function ListingFilters() {
         {/* Keyword */}
         <input
           type="text"
-          placeholder="Search listings..."
+          placeholder="Find a stud..."
           defaultValue={searchParams.get('keyword') ?? ''}
           onChange={(e) => updateParam('keyword', e.target.value)}
           className="px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-400"
@@ -110,6 +113,16 @@ export default function ListingFilters() {
           <option value="unavailable">Unavailable</option>
         </select>
       </div>
+      {hasFilters && (
+        <div className="mt-3 flex justify-end">
+          <button
+            onClick={clearFilters}
+            className="text-sm text-gray-500 hover:text-gray-800 underline transition-colors"
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
     </div>
   )
 }

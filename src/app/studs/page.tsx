@@ -18,7 +18,7 @@ async function StudsResults({ filters }: { filters: Filters }) {
 
   return (
     <div>
-      <p className="text-sm text-gray-500 mb-6">{listings.length} listing{listings.length !== 1 ? 's' : ''} found</p>
+      <p className="text-sm text-gray-500 mb-6">Showing {listings.length} active stud listing{listings.length !== 1 ? 's' : ''}</p>
       <ListingGrid listings={listings} />
     </div>
   )
@@ -34,15 +34,15 @@ export default async function StudsPage({ searchParams }: PageProps) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mb-10">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Browse Studs</h1>
         <p className="text-gray-500 text-sm">
-          Find the right stud for your breeding program.
+          Search active stud listings by breed, location, and availability.
         </p>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-8">
         <Suspense>
           <ListingFilters />
         </Suspense>

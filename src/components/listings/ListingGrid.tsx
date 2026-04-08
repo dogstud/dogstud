@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import ListingCard from './ListingCard'
 import type { StudListing } from '@/lib/types'
 
@@ -27,8 +28,8 @@ function SkeletonCard() {
 export default function ListingGrid({ listings, loading = false }: ListingGridProps) {
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.from({ length: 6 }).map((_, i) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {Array.from({ length: 8 }).map((_, i) => (
           <SkeletonCard key={i} />
         ))}
       </div>
@@ -38,14 +39,15 @@ export default function ListingGrid({ listings, loading = false }: ListingGridPr
   if (listings.length === 0) {
     return (
       <div className="text-center py-16">
-        <p className="text-gray-500 text-lg">No listings found.</p>
-        <p className="text-gray-400 text-sm mt-1">Try adjusting your filters.</p>
+        <p className="text-gray-500 text-lg">No stud listings match those filters</p>
+        <p className="text-gray-400 text-sm mt-1">Try another breed, broaden your location, or reset your filters.</p>
+        <Link href="/studs" className="text-sm text-gray-500 underline hover:text-gray-800 mt-3 inline-block transition-colors">Reset filters</Link>
       </div>
     )
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {listings.map((listing) => (
         <ListingCard key={listing.id} listing={listing} />
       ))}

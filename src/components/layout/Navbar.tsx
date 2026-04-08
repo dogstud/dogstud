@@ -28,19 +28,19 @@ export default function Navbar({ user }: NavbarProps) {
       className="sticky top-0 z-50 border-b border-white/10"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Image
               src="/dogstud-logo.jpg"
               alt="DOGSTUD"
-              width={36}
-              height={36}
+              width={44}
+              height={44}
               className="rounded"
               priority
             />
             <span
-              className="text-white font-bold text-lg tracking-wide hidden sm:block"
+              className="text-white font-extrabold text-xl tracking-wide hidden sm:block"
               style={{ letterSpacing: '0.08em' }}
             >
               DOGSTUD
@@ -55,8 +55,8 @@ export default function Navbar({ user }: NavbarProps) {
             <Link href="/how-it-works" className="text-white/80 hover:text-white text-sm font-medium transition-colors">
               How It Works
             </Link>
-            <Link href="/about" className="text-white/80 hover:text-white text-sm font-medium transition-colors">
-              About
+            <Link href="/studs?breed=" className="text-white/80 hover:text-white text-sm font-medium transition-colors">
+              Breeds
             </Link>
           </div>
 
@@ -83,7 +83,7 @@ export default function Navbar({ user }: NavbarProps) {
                   href="/login"
                   className="text-white/80 hover:text-white text-sm font-medium transition-colors"
                 >
-                  Log In
+                  Sign In
                 </Link>
                 <Link
                   href="/signup"
@@ -130,11 +130,11 @@ export default function Navbar({ user }: NavbarProps) {
               How It Works
             </Link>
             <Link
-              href="/about"
+              href="/studs"
               className="block text-white/80 hover:text-white text-sm font-medium py-2"
               onClick={() => setMenuOpen(false)}
             >
-              About
+              Breeds
             </Link>
             <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
               {user ? (
@@ -160,7 +160,7 @@ export default function Navbar({ user }: NavbarProps) {
                     className="block text-white/80 hover:text-white text-sm font-medium py-2"
                     onClick={() => setMenuOpen(false)}
                   >
-                    Log In
+                    Sign In
                   </Link>
                   <Link
                     href="/signup"

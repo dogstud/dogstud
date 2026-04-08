@@ -30,7 +30,7 @@ export default async function StudDetailPage({ params }: PageProps) {
   const feeDisplay = formatFee(listing.stud_fee, listing.contact_for_fee)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-20 lg:pb-0">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-6">
         <Link href="/studs" className="hover:text-gray-800">Browse Studs</Link>
@@ -143,7 +143,7 @@ export default async function StudDetailPage({ params }: PageProps) {
         </div>
 
         {/* Right column — sidebar */}
-        <div className="space-y-5">
+        <div className="space-y-5 lg:sticky lg:top-24 lg:self-start">
           {/* Breeder info */}
           {profile && (
             <Card>
@@ -176,6 +176,7 @@ export default async function StudDetailPage({ params }: PageProps) {
           )}
 
           {/* Inquiry form */}
+          <div id="inquiry-form">
           <Card>
             {listing.profiles?.user_id ? (
               <InquiryForm
@@ -187,7 +188,19 @@ export default async function StudDetailPage({ params }: PageProps) {
               <p className="text-sm text-gray-500">Contact information unavailable.</p>
             )}
           </Card>
+          </div>
         </div>
+      </div>
+
+      {/* Mobile sticky CTA */}
+      <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-white border-t border-gray-200 p-4 z-40">
+        <a
+          href="#inquiry-form"
+          className="block w-full text-center py-3 rounded-md text-sm font-semibold text-white transition-colors"
+          style={{ backgroundColor: "#0B1F2A" }}
+        >
+          Send Message
+        </a>
       </div>
     </div>
   )
