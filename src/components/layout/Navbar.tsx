@@ -24,8 +24,7 @@ export default function Navbar({ user }: NavbarProps) {
 
   return (
     <nav
-      style={{ backgroundColor: '#1F4D3A' }}
-      className="sticky top-0 z-50 border-b border-white/15"
+      className="sticky top-0 z-50 bg-white border-b border-gray-200"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -43,13 +42,13 @@ export default function Navbar({ user }: NavbarProps) {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/studs" className="text-white/80 hover:text-white text-sm font-medium transition-colors">
+            <Link href="/studs" className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
               Browse Studs
             </Link>
-            <Link href="/how-it-works" className="text-white/80 hover:text-white text-sm font-medium transition-colors">
+            <Link href="/how-it-works" className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
               How It Works
             </Link>
-            <Link href="/studs?breed=" className="text-white/80 hover:text-white text-sm font-medium transition-colors">
+            <Link href="/studs?breed=" className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
               Breeds
             </Link>
           </div>
@@ -60,13 +59,13 @@ export default function Navbar({ user }: NavbarProps) {
               <>
                 <Link
                   href="/dashboard"
-                  className="text-white/80 hover:text-white text-sm font-medium transition-colors"
+                  className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors"
                 >
                   Dashboard
                 </Link>
                 <button
                   onClick={handleSignOut}
-                  className="text-sm font-medium px-4 py-2 rounded border border-white/30 text-white hover:bg-white/10 transition-colors"
+                  className="text-sm font-medium px-4 py-2 rounded border border-gray-300 text-gray-700 hover:border-[#1F4D3A] hover:text-[#1F4D3A] transition-colors"
                 >
                   Sign Out
                 </button>
@@ -75,7 +74,7 @@ export default function Navbar({ user }: NavbarProps) {
               <>
                 <Link
                   href="/login"
-                  className="text-white/80 hover:text-white text-sm font-medium transition-colors"
+                  className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors"
                 >
                   Sign In
                 </Link>
@@ -92,7 +91,7 @@ export default function Navbar({ user }: NavbarProps) {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden text-white p-2"
+            className="md:hidden text-gray-700 p-2"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -108,41 +107,41 @@ export default function Navbar({ user }: NavbarProps) {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="md:hidden border-t border-white/10 py-4 space-y-3">
+          <div className="md:hidden border-t border-gray-100 py-4 space-y-3">
             <Link
               href="/studs"
-              className="block text-white/80 hover:text-white text-sm font-medium py-2"
+              className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
               onClick={() => setMenuOpen(false)}
             >
               Browse Studs
             </Link>
             <Link
               href="/how-it-works"
-              className="block text-white/80 hover:text-white text-sm font-medium py-2"
+              className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
               onClick={() => setMenuOpen(false)}
             >
               How It Works
             </Link>
             <Link
               href="/studs"
-              className="block text-white/80 hover:text-white text-sm font-medium py-2"
+              className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
               onClick={() => setMenuOpen(false)}
             >
               Breeds
             </Link>
-            <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
+            <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
               {user ? (
                 <>
                   <Link
                     href="/dashboard"
-                    className="block text-white/80 hover:text-white text-sm font-medium py-2"
+                    className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
                     onClick={() => setMenuOpen(false)}
                   >
                     Dashboard
                   </Link>
                   <button
                     onClick={() => { setMenuOpen(false); handleSignOut() }}
-                    className="text-left text-white/80 hover:text-white text-sm font-medium py-2"
+                    className="text-left text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
                   >
                     Sign Out
                   </button>
@@ -151,7 +150,7 @@ export default function Navbar({ user }: NavbarProps) {
                 <>
                   <Link
                     href="/login"
-                    className="block text-white/80 hover:text-white text-sm font-medium py-2"
+                    className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
                     onClick={() => setMenuOpen(false)}
                   >
                     Sign In
