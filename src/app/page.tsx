@@ -17,17 +17,17 @@ export default async function HomePage() {
       <section style={{ backgroundColor: '#0B1F2A' }} className="py-24 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            Find Proven Dog Studs From Trusted Breeders
+            Find Proven Stud Dogs Near You
           </h1>
           <p className="text-lg sm:text-xl text-white/70 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Browse verified listings, compare stud fees, and connect directly with breeders near you.
+            Connect with verified breeders and book your next breeding faster.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/studs"
               className="inline-block px-8 py-3.5 rounded-md text-base font-semibold text-white border border-white/30 hover:bg-white/10 transition-colors"
             >
-              Browse Studs
+              Browse Stud Dogs
             </Link>
             <Link
               href="/signup"
@@ -40,17 +40,28 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* TRUST BAR */}
+      <div className="bg-white border-b border-gray-100 py-3 px-4 text-center">
+        <p className="text-sm text-gray-500 font-medium tracking-wide">
+          ✔ Verified Breeders  ✔ Real Listings  ✔ Direct Messaging  ✔ Nationwide Coverage
+        </p>
+      </div>
+
       {/* FEATURED LISTINGS */}
       {featuredListings.length > 0 && (
         <section className="py-16 px-4 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">Featured Studs</h2>
+              <h2 className="text-2xl font-bold text-gray-900">Available Stud Dogs</h2>
               <Link href="/studs" className="text-sm font-medium text-gray-600 hover:text-gray-900 underline">
                 View All
               </Link>
             </div>
+            <p className="text-sm text-gray-500 mb-4">🔥 New studs added this week</p>
             <ListingGrid listings={featuredListings} />
+            <p className="mt-8 text-center text-xs text-gray-400">
+              Built for breeders who want real connections — not just listings.
+            </p>
           </div>
         </section>
       )}
