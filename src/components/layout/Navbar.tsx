@@ -30,21 +30,15 @@ export default function Navbar({ user }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
+          <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/dogstud-logo.jpg"
-              alt="DOGSTUD"
-              width={44}
-              height={44}
-              className="rounded"
+              alt="DOGSTUD — Proven Dog Studs. Trusted Breeders."
+              width={160}
+              height={52}
+              className="h-11 w-auto object-contain"
               priority
             />
-            <span
-              className="text-white font-extrabold text-xl tracking-wide hidden sm:block"
-              style={{ letterSpacing: '0.08em' }}
-            >
-              DOGSTUD
-            </span>
           </Link>
 
           {/* Desktop nav */}
