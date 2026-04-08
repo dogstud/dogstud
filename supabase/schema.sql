@@ -1,141 +1,123 @@
--- PROFILES
+-- profiles
 create table if not exists profiles (
-  id uuid references auth.users on delete cascade primary key,
-  email text unique not null,
-  full_name text,
-  username text unique,
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  display_name text not null,
+  slug text not null unique,
+  kennel_name text,
+  bio text,
   city text,
   state text,
-  country text default 'US',
-  phone text,
-  bio text,
   avatar_url text,
-  role text default 'buyer' check (role in ('buyer', 'owner', 'admin')),
-  is_verified boolean default false,
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
 );
 
--- STUDS
-create table if not exists studs (
-  id uuid default gen_random_uuid() primary key,
-  owner_id uuid references profiles(id) on delete cascade not null,
-  name text not null,
+-- stud_listings
+create table if not exists stud_listings (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  profile_id uuid not null references profiles(id) on delete cascade,
+  slug text not null unique,
+  dog_name text not null,
   breed text not null,
-  color text,
-  genetics text,
-  weight_lbs numeric,
-  age_years numeric,
-  stud_fee numeric,
-  contact_for_price boolean default false,
+  age int,
   city text not null,
-  state text,
-  country text default 'US',
-  is_proven boolean default false,
-  health_tested boolean default false,
-  health_notes text,
+  state text not null,
+  stud_fee numeric(10,2),
+  contact_for_fee boolean default false,
+  short_summary text not null,
+  description text not null,
+  primary_image_url text,
+  color text,
+  weight numeric(5,1),
+  pedigree_text text,
+  health_testing text,
   akc_registered boolean default false,
-  registration_type text,
-  description text,
-  photos text[] default '{}',
-  availability text default 'available' check (availability in ('available', 'unavailable', 'limited')),
-  status text default 'pending' check (status in ('active', 'pending', 'rejected', 'inactive')),
-  is_featured boolean default false,
-  is_boosted boolean default false,
-  boost_expires_at timestamptz,
-  views integer default 0,
-  message_count integer default 0,
+  availability_status text default 'available' check (availability_status in ('available','unavailable','limited')),
+  status text default 'draft' check (status in ('draft','published','archived')),
+  featured boolean default false,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
 
--- CONVERSATIONS (one per buyer per listing)
-create table if not exists conversations (
-  id uuid default gen_random_uuid() primary key,
-  stud_id uuid references studs(id) on delete cascade not null,
-  buyer_id uuid references profiles(id) on delete cascade not null,
-  owner_id uuid references profiles(id) on delete cascade not null,
-  last_message_at timestamptz default now(),
-  last_message_preview text,
-  buyer_unread integer default 0,
-  owner_unread integer default 1,
-  created_at timestamptz default now(),
-  unique(stud_id, buyer_id)
-);
-
--- MESSAGES
-create table if not exists messages (
-  id uuid default gen_random_uuid() primary key,
-  conversation_id uuid references conversations(id) on delete cascade not null,
-  sender_id uuid references profiles(id) on delete cascade not null,
-  message_text text not null,
-  is_read boolean default false,
+-- stud_images
+create table if not exists stud_images (
+  id uuid primary key default gen_random_uuid(),
+  listing_id uuid not null references stud_listings(id) on delete cascade,
+  image_url text not null,
+  sort_order int default 0,
   created_at timestamptz default now()
 );
 
--- EVENT TRACKING
-create table if not exists search_events (
-  id uuid default gen_random_uuid() primary key,
-  breed text,
-  location text,
-  user_id uuid,
-  session_id text,
+-- inquiries
+create table if not exists inquiries (
+  id uuid primary key default gen_random_uuid(),
+  listing_id uuid not null references stud_listings(id) on delete cascade,
+  breeder_user_id uuid not null references auth.users(id),
+  sender_name text not null,
+  sender_email text not null,
+  sender_phone text,
+  message text not null,
+  status text default 'new' check (status in ('new','read','replied')),
+  ip_address text,
+  user_agent text,
+  honeypot text,
   created_at timestamptz default now()
 );
 
-create table if not exists listing_views (
-  id uuid default gen_random_uuid() primary key,
-  stud_id uuid references studs(id) on delete cascade,
-  breed text,
-  location text,
-  viewer_id uuid,
-  session_id text,
-  created_at timestamptz default now()
-);
-
-create table if not exists message_events (
-  id uuid default gen_random_uuid() primary key,
-  conversation_id uuid,
-  stud_id uuid,
-  buyer_location text,
-  breed text,
-  created_at timestamptz default now()
-);
-
--- ANALYTICS
-create table if not exists demand_by_breed (
-  breed text primary key,
-  search_count integer default 0,
-  view_count integer default 0,
-  message_count integer default 0,
-  updated_at timestamptz default now()
-);
-
-create table if not exists demand_by_location (
-  location text primary key,
-  search_count integer default 0,
-  message_count integer default 0,
-  updated_at timestamptz default now()
-);
+-- indexes
+create index if not exists idx_stud_listings_breed on stud_listings(breed);
+create index if not exists idx_stud_listings_state on stud_listings(state);
+create index if not exists idx_stud_listings_status on stud_listings(status);
+create index if not exists idx_stud_listings_featured on stud_listings(featured);
+create index if not exists idx_stud_listings_user_id on stud_listings(user_id);
+create index if not exists idx_inquiries_breeder_user_id on inquiries(breeder_user_id);
+create index if not exists idx_inquiries_listing_id on inquiries(listing_id);
 
 -- RLS
 alter table profiles enable row level security;
-alter table studs enable row level security;
-alter table conversations enable row level security;
-alter table messages enable row level security;
+alter table stud_listings enable row level security;
+alter table stud_images enable row level security;
+alter table inquiries enable row level security;
 
-create policy "Profiles viewable by all" on profiles for select using (true);
-create policy "Users manage own profile" on profiles for all using (auth.uid() = id);
+-- profiles policies
+create policy "profiles_public_read" on profiles for select using (true);
+create policy "profiles_owner_insert" on profiles for insert with check (auth.uid() = user_id);
+create policy "profiles_owner_update" on profiles for update using (auth.uid() = user_id);
 
-create policy "Active studs viewable by all" on studs for select using (status = 'active');
-create policy "Owners manage own studs" on studs for all using (auth.uid() = owner_id);
+-- stud_listings policies
+create policy "listings_public_read" on stud_listings for select using (status = 'published');
+create policy "listings_owner_all" on stud_listings for all using (auth.uid() = user_id);
 
-create policy "Conversation participants can view" on conversations for select using (auth.uid() = buyer_id or auth.uid() = owner_id);
-create policy "Buyers can create conversations" on conversations for insert with check (auth.uid() = buyer_id);
-create policy "Participants can update" on conversations for update using (auth.uid() = buyer_id or auth.uid() = owner_id);
-
-create policy "Participants can view messages" on messages for select using (
-  auth.uid() in (select buyer_id from conversations where id = conversation_id union select owner_id from conversations where id = conversation_id)
+-- stud_images policies
+create policy "images_public_read" on stud_images for select using (true);
+create policy "images_owner_insert" on stud_images for insert with check (
+  auth.uid() = (select user_id from stud_listings where id = listing_id)
 );
-create policy "Participants can send messages" on messages for insert with check (
-  auth.uid() in (select buyer_id from conversations where id = conversation_id union select owner_id from conversations where id = conversation_id)
+create policy "images_owner_delete" on stud_images for delete using (
+  auth.uid() = (select user_id from stud_listings where id = listing_id)
 );
+
+-- inquiries policies
+create policy "inquiries_owner_read" on inquiries for select using (auth.uid() = breeder_user_id);
+-- insert handled via service role in route handler only
+
+-- trigger: auto-create profile on signup
+create or replace function handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles (user_id, display_name, slug)
+  values (
+    new.id,
+    coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1)),
+    lower(regexp_replace(coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1)), '[^a-z0-9]+', '-', 'g'))
+    || '-' || substr(new.id::text, 1, 8)
+  );
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create or replace trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure handle_new_user();

@@ -1,135 +1,125 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
-import Navbar from '@/components/Navbar'
-import Image from 'next/image'
-import type { User } from '@supabase/supabase-js'
+import { createClient } from '@/lib/supabase/server'
+import { getUserListings } from '@/lib/queries/listings'
+import { getUserInquiries } from '@/lib/queries/inquiries'
+import { getProfileByUserId } from '@/lib/queries/profiles'
+import Card from '@/components/ui/Card'
 
-interface Stud {
-  id: string
-  name: string
-  breed: string
-  status: string
-  views: number
-  message_count: number
-  photos: string[]
-  availability: string
-  stud_fee: number
-}
+export default async function DashboardPage() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-export default function DashboardPage() {
-  const router = useRouter()
-  const [user, setUser] = useState<User | null>(null)
-  const [studs, setStuds] = useState<Stud[]>([])
-  const [loading, setLoading] = useState(true)
+  if (!user) return null
 
-  useEffect(() => {
-    supabase.auth.getUser().then(async ({ data }) => {
-      if (!data.user) { router.push('/auth/signin'); return }
-      setUser(data.user)
-      const { data: myStuds } = await supabase
-        .from('studs')
-        .select('*')
-        .eq('owner_id', data.user.id)
-        .order('created_at', { ascending: false })
-      setStuds(myStuds || [])
-      setLoading(false)
-    })
-  }, [router])
+  const [listings, inquiries, profile] = await Promise.all([
+    getUserListings(user.id).catch(() => []),
+    getUserInquiries(user.id).catch(() => []),
+    getProfileByUserId(user.id).catch(() => null),
+  ])
 
-  const totalViews = studs.reduce((a, s) => a + (s.views || 0), 0)
-  const totalMessages = studs.reduce((a, s) => a + (s.message_count || 0), 0)
-  const activeListings = studs.filter(s => s.status === 'active').length
-
-  if (!user || loading) return (
-    <>
-      <Navbar />
-      <div className="flex items-center justify-center h-64 text-gray-400">Loading...</div>
-    </>
-  )
+  const publishedCount = listings.filter((l) => l.status === 'published').length
+  const draftCount = listings.filter((l) => l.status === 'draft').length
+  const newInquiries = inquiries.filter((i) => i.status === 'new').length
 
   return (
-    <>
-      <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-[#1E2A38]">Dashboard</h1>
-          <Link
-            href="/list"
-            className="bg-[#C6922F] hover:bg-[#A87826] text-white font-semibold px-4 py-2 rounded-lg text-sm"
-          >
-            + Add Listing
-          </Link>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Welcome back{profile?.display_name ? `, ${profile.display_name}` : ''}
+          </p>
         </div>
+        <Link
+          href="/dashboard/listings/new"
+          className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white rounded-md"
+          style={{ backgroundColor: '#0B1F2A' }}
+        >
+          + New Listing
+        </Link>
+      </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          {[
-            { label: 'Active Listings', value: activeListings },
-            { label: 'Total Views', value: totalViews },
-            { label: 'Messages', value: totalMessages },
-          ].map(stat => (
-            <div key={stat.label} className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-              <div className="text-3xl font-black text-[#1E2A38]">{stat.value}</div>
-              <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </div>
+      {/* Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {[
+          { label: 'Published', value: publishedCount },
+          { label: 'Drafts', value: draftCount },
+          { label: 'Total Inquiries', value: inquiries.length },
+          { label: 'New Inquiries', value: newInquiries },
+        ].map(({ label, value }) => (
+          <Card key={label} padding="md">
+            <p className="text-2xl font-bold text-gray-900">{value}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+          </Card>
+        ))}
+      </div>
 
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-[#1E2A38]">My Listings</h2>
-          <Link href="/inbox" className="text-sm text-[#C6922F] font-semibold hover:underline">View Inbox →</Link>
-        </div>
-
-        {studs.length === 0 ? (
-          <div className="bg-white border border-dashed border-gray-300 rounded-xl p-12 text-center">
-            <p className="text-gray-400 mb-4">No listings yet</p>
-            <Link href="/list" className="bg-[#C6922F] text-white font-semibold px-6 py-2 rounded-lg hover:bg-[#A87826]">
-              List Your Stud
+      {/* Recent Inquiries */}
+      {inquiries.length > 0 && (
+        <Card>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-900">Recent Inquiries</h2>
+            <Link
+              href="/dashboard/listings"
+              className="text-xs text-gray-500 hover:text-gray-700 underline"
+            >
+              View Listings
             </Link>
           </div>
-        ) : (
           <div className="space-y-3">
-            {studs.map(stud => (
-              <div key={stud.id} className="bg-white border border-gray-200 rounded-xl p-4 flex items-center gap-4">
-                <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                  <Image
-                    src={stud.photos?.[0] || `https://picsum.photos/seed/${stud.id}/64/64`}
-                    alt={stud.name}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
+            {inquiries.slice(0, 5).map((inquiry) => (
+              <div
+                key={inquiry.id}
+                className="flex items-start gap-3 pb-3 border-b border-gray-100 last:border-0 last:pb-0"
+              >
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+                  style={{ backgroundColor: '#0B1F2A' }}
+                >
+                  {inquiry.sender_name[0]?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-[#1E2A38]">{stud.name}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                      stud.status === 'active' ? 'bg-green-50 text-green-700' :
-                      stud.status === 'pending' ? 'bg-yellow-50 text-yellow-700' :
-                      'bg-gray-50 text-gray-500'
-                    }`}>{stud.status}</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="text-sm font-medium text-gray-900">{inquiry.sender_name}</p>
+                    {inquiry.status === 'new' && (
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700">
+                        New
+                      </span>
+                    )}
+                    <p className="text-xs text-gray-400 ml-auto">
+                      {new Date(inquiry.created_at).toLocaleDateString()}
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-500">{stud.breed}</p>
-                  <div className="flex gap-4 text-xs text-gray-400 mt-1">
-                    <span>👁 {stud.views || 0} views</span>
-                    <span>💬 {stud.message_count || 0} messages</span>
-                    <span>${stud.stud_fee?.toLocaleString() || 'Contact'}</span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Link href={`/studs/${stud.id}`} className="text-xs text-gray-500 border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50">
-                    View
-                  </Link>
+                  {inquiry.stud_listings && (
+                    <p className="text-xs text-gray-500">
+                      Re: {inquiry.stud_listings.dog_name}
+                    </p>
+                  )}
+                  <p className="text-sm text-gray-600 mt-0.5 line-clamp-2">{inquiry.message}</p>
                 </div>
               </div>
             ))}
           </div>
-        )}
-      </div>
-    </>
+        </Card>
+      )}
+
+      {/* Quick links */}
+      {listings.length === 0 && (
+        <Card>
+          <div className="text-center py-6">
+            <p className="text-gray-500 mb-4">You haven&apos;t created any listings yet.</p>
+            <Link
+              href="/dashboard/listings/new"
+              className="inline-block px-6 py-2.5 text-sm font-semibold text-white rounded-md"
+              style={{ backgroundColor: '#0B1F2A' }}
+            >
+              Create Your First Listing
+            </Link>
+          </div>
+        </Card>
+      )}
+    </div>
   )
 }
