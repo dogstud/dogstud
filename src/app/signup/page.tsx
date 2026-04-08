@@ -47,7 +47,7 @@ export default function SignupPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
-            <Image src="/dogstud-logo.jpg" alt="DOGSTUD" width={40} height={40} className="rounded" />
+            <Image src="/dogstud-logo.png" alt="DOGSTUD" width={40} height={40} className="rounded" />
             <span className="font-bold text-xl tracking-wide" style={{ color: '#1F4D3A' }}>
               DOGSTUD
             </span>

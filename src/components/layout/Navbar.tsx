@@ -32,7 +32,7 @@ export default function Navbar({ user }: NavbarProps) {
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
             <Image
-              src="/dogstud-logo.jpg"
+              src="/dogstud-logo.png"
               alt="DOGSTUD — Proven Dog Studs. Trusted Breeders."
               width={160}
               height={52}

@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-3">
               <Image
-                src="/dogstud-logo.jpg"
+                src="/dogstud-logo.png"
                 alt="DOGSTUD"
                 width={32}
                 height={32}
