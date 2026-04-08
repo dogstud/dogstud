@@ -35,7 +35,7 @@ export default async function DashboardPage() {
         <Link
           href="/dashboard/listings/new"
           className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white rounded-md"
-          style={{ backgroundColor: '#0B1F2A' }}
+          style={{ backgroundColor: '#2F7D5C' }}
         >
           + New Listing
         </Link>
@@ -76,7 +76,7 @@ export default async function DashboardPage() {
               >
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-                  style={{ backgroundColor: '#0B1F2A' }}
+                  style={{ backgroundColor: '#1F4D3A' }}
                 >
                   {inquiry.sender_name[0]?.toUpperCase()}
                 </div>
@@ -113,7 +113,7 @@ export default async function DashboardPage() {
             <Link
               href="/dashboard/listings/new"
               className="inline-block px-6 py-2.5 text-sm font-semibold text-white rounded-md"
-              style={{ backgroundColor: '#0B1F2A' }}
+              style={{ backgroundColor: '#2F7D5C' }}
             >
               Create Your First Listing
             </Link>

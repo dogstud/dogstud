@@ -21,7 +21,7 @@ const sizeStyles: Record<string, string> = {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', loading, children, className = '', style, ...props }, ref) => {
-    const primaryStyle = variant === 'primary' ? { backgroundColor: '#0B1F2A', ...style } : style
+    const primaryStyle = variant === 'primary' ? { backgroundColor: '#2F7D5C', ...style } : style
 
     return (
       <button

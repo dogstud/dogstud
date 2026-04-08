@@ -14,7 +14,7 @@ export default async function HomePage() {
   return (
     <div>
       {/* HERO */}
-      <section style={{ backgroundColor: '#0B1F2A' }} className="py-24 px-4">
+      <section style={{ backgroundColor: '#1F4D3A' }} className="py-24 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
             Find Proven Stud Dogs Near You
@@ -32,7 +32,7 @@ export default async function HomePage() {
             <Link
               href="/signup"
               className="inline-block px-8 py-3.5 rounded-md text-base font-semibold transition-colors"
-              style={{ backgroundColor: '#C8A951', color: '#0B1F2A' }}
+              style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
             >
               List Your Stud
             </Link>
@@ -94,7 +94,7 @@ export default async function HomePage() {
               <div key={step} className="text-center">
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-4"
-                  style={{ backgroundColor: '#0B1F2A' }}
+                  style={{ backgroundColor: '#2F7D5C' }}
                 >
                   {step}
                 </div>
@@ -136,7 +136,7 @@ export default async function HomePage() {
               >
                 <div
                   className="w-8 h-8 rounded mb-4"
-                  style={{ backgroundColor: '#0B1F2A' }}
+                  style={{ backgroundColor: '#1F4D3A' }}
                 />
                 <h3 className="font-semibold text-gray-900 mb-2">{title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
@@ -147,7 +147,7 @@ export default async function HomePage() {
       </section>
 
       {/* CTA */}
-      <section style={{ backgroundColor: '#0B1F2A' }} className="py-16 px-4 text-center">
+      <section style={{ backgroundColor: '#1F4D3A' }} className="py-16 px-4 text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-4">Ready to list your stud?</h2>
           <p className="text-white/60 mb-8">
@@ -156,7 +156,7 @@ export default async function HomePage() {
           <Link
             href="/signup"
             className="inline-block px-8 py-3.5 rounded-md text-base font-semibold transition-colors"
-            style={{ backgroundColor: '#C8A951', color: '#0B1F2A' }}
+            style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
           >
             Get Started Free
           </Link>

@@ -70,14 +70,14 @@ export default function ListingFilters() {
           placeholder="Find a stud..."
           defaultValue={searchParams.get('keyword') ?? ''}
           onChange={(e) => updateParam('keyword', e.target.value)}
-          className="px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-400"
+          className="px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2F7D5C]/20 focus:border-[#2F7D5C]"
         />
 
         {/* Breed */}
         <select
           defaultValue={searchParams.get('breed') ?? ''}
           onChange={(e) => updateParam('breed', e.target.value)}
-          className="px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-400 bg-white appearance-none"
+          className="px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2F7D5C]/20 focus:border-[#2F7D5C] bg-white appearance-none"
         >
           <option value="">All Breeds</option>
           {BREEDS.map((breed) => (
@@ -91,7 +91,7 @@ export default function ListingFilters() {
         <select
           defaultValue={searchParams.get('state') ?? ''}
           onChange={(e) => updateParam('state', e.target.value)}
-          className="px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-400 bg-white appearance-none"
+          className="px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2F7D5C]/20 focus:border-[#2F7D5C] bg-white appearance-none"
         >
           <option value="">All States</option>
           {US_STATES.map((state) => (
@@ -105,7 +105,7 @@ export default function ListingFilters() {
         <select
           defaultValue={searchParams.get('availability') ?? ''}
           onChange={(e) => updateParam('availability', e.target.value)}
-          className="px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-400 bg-white appearance-none"
+          className="px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2F7D5C]/20 focus:border-[#2F7D5C] bg-white appearance-none"
         >
           <option value="">All Availability</option>
           <option value="available">Available</option>
@@ -117,7 +117,7 @@ export default function ListingFilters() {
         <div className="mt-3 flex justify-end">
           <button
             onClick={clearFilters}
-            className="text-sm text-gray-500 hover:text-gray-800 underline transition-colors"
+            className="text-sm text-[#1F4D3A] hover:text-[#2F7D5C] underline transition-colors"
           >
             Clear filters
           </button>

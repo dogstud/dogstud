@@ -24,8 +24,8 @@ export default function Navbar({ user }: NavbarProps) {
 
   return (
     <nav
-      style={{ backgroundColor: '#0B1F2A' }}
-      className="sticky top-0 z-50 border-b border-white/10"
+      style={{ backgroundColor: '#1F4D3A' }}
+      className="sticky top-0 z-50 border-b border-white/15"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -88,7 +88,7 @@ export default function Navbar({ user }: NavbarProps) {
                 <Link
                   href="/signup"
                   className="text-sm font-semibold px-4 py-2 rounded text-navy"
-                  style={{ backgroundColor: '#C8A951', color: '#0B1F2A' }}
+                  style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
                 >
                   List Your Stud
                 </Link>
@@ -165,7 +165,7 @@ export default function Navbar({ user }: NavbarProps) {
                   <Link
                     href="/signup"
                     className="inline-block text-sm font-semibold px-4 py-2 rounded text-center"
-                    style={{ backgroundColor: '#C8A951', color: '#0B1F2A' }}
+                    style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
                     onClick={() => setMenuOpen(false)}
                   >
                     List Your Stud

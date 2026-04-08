@@ -33,7 +33,7 @@ export default async function StudDetailPage({ params }: PageProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-20 lg:pb-0">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-6">
-        <Link href="/studs" className="hover:text-gray-800">Browse Studs</Link>
+        <Link href="/studs" className="hover:text-[#2F7D5C]">Browse Studs</Link>
         <span className="mx-2">/</span>
         <span className="text-gray-900">{listing.dog_name}</span>
       </nav>
@@ -76,7 +76,7 @@ export default async function StudDetailPage({ params }: PageProps) {
               <div className="flex gap-2 flex-wrap">
                 <Badge variant={listing.availability_status} />
                 {listing.akc_registered && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 border border-green-200" style={{ color: '#1F4D3A' }}>
                     AKC Registered
                   </span>
                 )}
@@ -154,7 +154,7 @@ export default async function StudDetailPage({ params }: PageProps) {
               >
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shrink-0"
-                  style={{ backgroundColor: '#0B1F2A' }}
+                  style={{ backgroundColor: '#1F4D3A' }}
                 >
                   {profile.display_name[0]?.toUpperCase()}
                 </div>
@@ -197,7 +197,7 @@ export default async function StudDetailPage({ params }: PageProps) {
         <a
           href="#inquiry-form"
           className="block w-full text-center py-3 rounded-md text-sm font-semibold text-white transition-colors"
-          style={{ backgroundColor: "#0B1F2A" }}
+          style={{ backgroundColor: "#2F7D5C" }}
         >
           Send Message
         </a>

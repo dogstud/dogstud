@@ -46,14 +46,14 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
             <Image src="/dogstud-logo.jpg" alt="DOGSTUD" width={40} height={40} className="rounded" />
-            <span className="font-bold text-xl tracking-wide" style={{ color: '#0B1F2A' }}>
+            <span className="font-bold text-xl tracking-wide" style={{ color: '#1F4D3A' }}>
               DOGSTUD
             </span>
           </Link>
           <h1 className="mt-6 text-2xl font-bold text-gray-900">Sign in to your account</h1>
           <p className="text-sm text-gray-500 mt-1">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="font-medium underline" style={{ color: '#0B1F2A' }}>
+            <Link href="/signup" className="font-medium underline" style={{ color: '#1F4D3A' }}>
               Sign up
             </Link>
           </p>

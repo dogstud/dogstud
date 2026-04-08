@@ -59,17 +59,17 @@ export default function ListingCard({ listing }: ListingCardProps) {
           <span className="text-xs text-gray-400">
             {listing.city}, {listing.state}
           </span>
-          <span className="text-sm font-semibold" style={{ color: '#0B1F2A' }}>
+          <span className="text-sm font-semibold" style={{ color: '#1F4D3A' }}>
             {feeDisplay}
           </span>
         </div>
 
         {listing.akc_registered && (
-          <p className="text-xs text-blue-600 font-medium mt-2">AKC Registered</p>
+          <p className="text-xs font-medium mt-2" style={{ color: '#1F4D3A' }}>AKC Registered</p>
         )}
 
         <div className="mt-3 pt-3 border-t border-gray-100">
-          <span className="text-xs font-semibold text-gray-400 group-hover:text-gray-700 transition-colors">
+          <span className="text-xs font-semibold text-gray-400 group-hover:text-[#2F7D5C] transition-colors">
             View Listing →
           </span>
         </div>
