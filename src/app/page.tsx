@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getFeaturedListings } from '@/lib/queries/listings'
+import { getFeaturedListings, getListings } from '@/lib/queries/listings'
 import ListingGrid from '@/components/listings/ListingGrid'
 import type { StudListing } from '@/lib/types'
 
@@ -9,6 +9,14 @@ export default async function HomePage() {
     featuredListings = await getFeaturedListings(6)
   } catch {
     // Database may not be seeded yet
+  }
+
+  let recentListings: StudListing[] = []
+  try {
+    recentListings = await getListings({ })
+    recentListings = recentListings.slice(0, 6)
+  } catch {
+    // DB not seeded
   }
 
   return (
@@ -66,6 +74,62 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* RECENT LISTINGS */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Recently Added</h2>
+              <p className="text-sm text-gray-500 mt-1">Real listings from breeders across the country.</p>
+            </div>
+            <Link href="/studs" className="text-sm font-medium text-[#2F7D5C] hover:text-[#1F4D3A] transition-colors">
+              View all listings →
+            </Link>
+          </div>
+          <div className="mt-8">
+            {recentListings.length > 0 ? (
+              <ListingGrid listings={recentListings} />
+            ) : (
+              <div className="text-center py-12 border border-dashed border-gray-200 rounded-lg">
+                <p className="text-gray-400 text-sm">Listings will appear here once breeders join.</p>
+                <Link
+                  href="/signup"
+                  className="inline-block mt-4 text-sm font-semibold px-5 py-2.5 rounded-md text-white transition-colors"
+                  style={{ backgroundColor: "#2F7D5C" }}
+                >
+                  Be the first to list →
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* BROWSE BY BREED */}
+      <section className="py-12 px-4 bg-gray-50 border-y border-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Browse by Breed</h2>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "French Bulldog", "English Bulldog", "American Bully",
+              "Cane Corso", "Rottweiler", "German Shepherd",
+              "Doberman Pinscher", "Belgian Malinois", "Labrador Retriever",
+              "Golden Retriever", "Siberian Husky", "Bullmastiff",
+              "Staffordshire Bull Terrier", "Boxer", "Boston Terrier",
+              "Poodle", "Mastiff", "Great Dane"
+            ].map((breed) => (
+              <Link
+                key={breed}
+                href={`/studs?breed=${encodeURIComponent(breed)}`}
+                className="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-700 hover:border-[#2F7D5C] hover:text-[#2F7D5C] transition-colors"
+              >
+                {breed}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* HOW IT WORKS */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
@@ -88,7 +152,7 @@ export default async function HomePage() {
                 step: '3',
                 title: 'Connect With Breeders',
                 description:
-                  'Receive inquiries directly from interested breeders and manage them from your dashboard.',
+                  'Message breeder owners directly — no platform fees, no middlemen.',
               },
             ].map(({ step, title, description }) => (
               <div key={step} className="text-center">
@@ -117,17 +181,17 @@ export default async function HomePage() {
               {
                 title: 'Structured Profiles',
                 description:
-                  'Every listing includes breed, health testing, pedigree, and location. No guessing.',
+                  'Every listing includes breed, health testing, pedigree, and location — so you know exactly what you are getting.',
               },
               {
                 title: 'Direct Contact',
                 description:
-                  'Inquiries go straight to the breeder. No middleman, no brokerage fees.',
+                  'Contact breeders directly. No middleman. No brokerage fees. Message the owner and book your breeding.',
               },
               {
                 title: 'Organized Listings',
                 description:
-                  'Manage all your stud listings, inquiries, and profile from one clean dashboard.',
+                  'All stud listings, inquiries, and breeder profiles in one clean, searchable marketplace.',
               },
             ].map(({ title, description }) => (
               <div
@@ -151,7 +215,7 @@ export default async function HomePage() {
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-4">Ready to list your stud?</h2>
           <p className="text-white/60 mb-8">
-            Join breeders already using DOGSTUD to connect and grow their programs.
+            Join breeders already using DOGSTUD — no middleman, no platform fees. Contact breeders directly.
           </p>
           <Link
             href="/signup"

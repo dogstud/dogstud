@@ -49,14 +49,14 @@ export default function ListingCard({ listing }: ListingCardProps) {
           <Badge variant={listing.availability_status} />
         </div>
 
-        <p className="text-sm text-gray-500 mb-2">{listing.breed}</p>
+        <p className="text-xs font-semibold text-[#1F4D3A] uppercase tracking-wide mb-2">{listing.breed}</p>
 
         <p className="text-sm text-gray-600 line-clamp-2 mb-3 leading-relaxed">
           {listing.short_summary}
         </p>
 
         <div className="flex items-center justify-between">
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-gray-500 font-medium">
             {listing.city}, {listing.state}
           </span>
           <span className="text-sm font-semibold" style={{ color: '#1F4D3A' }}>
@@ -69,7 +69,7 @@ export default function ListingCard({ listing }: ListingCardProps) {
         )}
 
         <div className="mt-3 pt-3 border-t border-gray-100">
-          <span className="text-xs font-semibold text-gray-400 group-hover:text-[#2F7D5C] transition-colors">
+          <span className="text-xs font-semibold text-[#2F7D5C] group-hover:text-[#1F4D3A] transition-colors">
             View Listing →
           </span>
         </div>
