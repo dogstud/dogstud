@@ -1,4 +1,16 @@
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
+
+export const metadata: Metadata = {
+  title: 'Browse Stud Dogs | Dog Stud Marketplace',
+  description: 'Search stud dogs by breed and location. Contact breeders directly and find the right match.',
+  alternates: { canonical: 'https://dogstud.com/studs' },
+  openGraph: {
+    title: 'Browse Stud Dogs | Dog Stud Marketplace',
+    description: 'Search stud dogs by breed and location. Contact breeders directly and find the right match.',
+    url: 'https://dogstud.com/studs',
+  },
+}
 import { getListings } from '@/lib/queries/listings'
 import ListingGrid from '@/components/listings/ListingGrid'
 import ListingFilters from '@/components/listings/ListingFilters'
