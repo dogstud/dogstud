@@ -27,15 +27,15 @@ export default function Navbar({ user }: NavbarProps) {
       className="sticky top-0 z-50 bg-white border-b border-gray-200"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/dogstud-logo.png"
               alt="DOGSTUD — Proven Dog Studs. Trusted Breeders."
-              width={160}
-              height={52}
-              className="h-11 w-auto object-contain"
+              width={200}
+              height={66}
+              className="h-12 md:h-14 w-auto object-contain"
               priority
             />
           </Link>
