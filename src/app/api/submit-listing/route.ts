@@ -1,5 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import https from 'https'
+
+function sendEmail(to: string, subject: string, text: string): Promise<void> {
+  return new Promise((resolve) => {
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey) { resolve(); return }
+    const body = JSON.stringify({
+      from: 'DogStud <team@dogstud.com>',
+      to,
+      subject,
+      text,
+    })
+    const req = https.request(
+      {
+        hostname: 'api.resend.com',
+        path: '/emails',
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(body),
+        },
+      },
+      () => resolve()
+    )
+    req.on('error', () => resolve())
+    req.write(body)
+    req.end()
+  })
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,6 +76,48 @@ export async function POST(req: NextRequest) {
       .single()
 
     if (error) throw error
+
+    // Send email notifications (fire and forget)
+    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'brian@mybabypuppy.com'
+    const fromEmail = process.env.FROM_EMAIL || 'team@dogstud.com'
+    const timestamp = new Date().toISOString()
+    const editLink = `https://dogstud.com/edit-listing/${data.edit_token}`
+    const adminReviewLink = `https://dogstud.com/admin?token=ds-admin-2025`
+
+    void Promise.allSettled([
+      sendEmail(
+        adminEmail,
+        `New DogStud submission: ${body.dog_name}`,
+        `New listing submitted on DogStud.com
+
+Dog: ${body.dog_name}
+Breed: ${body.breed}
+Location: ${body.city}, ${body.state}
+Owner: ${body.owner_name}
+Phone: ${body.phone_number}
+Email: ${body.email}
+Submitted: ${timestamp}
+
+Review and approve at:
+${adminReviewLink}`
+      ),
+      sendEmail(
+        body.email.trim().toLowerCase(),
+        'Your DogStud listing was received',
+        `Hi ${body.owner_name},
+
+Your listing for ${body.dog_name} has been received and is under review.
+
+We typically approve listings within 24 hours. Once approved, your listing will be live at dogstud.com/studs.
+
+Save this link to edit your listing at any time:
+${editLink}
+
+Questions? Email us at team@dogstud.com
+
+— The DogStud Team`
+      ),
+    ]).catch(() => null)
 
     // Track event (fire and forget)
     admin.from('listing_events').insert({

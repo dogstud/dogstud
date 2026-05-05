@@ -30,7 +30,7 @@ export default function Footer() {
             <h4 className="text-xs font-bold text-gray-900 mb-3 uppercase tracking-widest">Marketplace</h4>
             <ul className="space-y-2 text-sm">
               <li><Link href="/studs" className="text-gray-500 hover:text-[#2F7D5C] transition-colors">Browse Studs</Link></li>
-              <li><Link href="/signup" className="text-gray-500 hover:text-[#2F7D5C] transition-colors">List Your Stud</Link></li>
+              <li><Link href="/list-your-stud" className="text-gray-500 hover:text-[#2F7D5C] transition-colors">List Your Stud Free</Link></li>
               <li><Link href="/how-it-works" className="text-gray-500 hover:text-[#2F7D5C] transition-colors">How It Works</Link></li>
             </ul>
           </div>

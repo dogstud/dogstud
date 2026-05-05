@@ -19,18 +19,18 @@ export default function HowItWorksPage() {
             {[
               {
                 step: '1',
-                title: 'Create Your Account',
-                desc: 'Sign up with your email. Your breeder profile is created automatically.',
+                title: 'Submit Your Stud',
+                desc: 'Fill out a quick form with your dog\'s details and photos. No account needed. Takes 60 seconds.',
               },
               {
                 step: '2',
-                title: 'List Your Stud',
-                desc: 'Fill in your dog\'s details — breed, age, health testing, pedigree, photos, and stud fee. Publish when ready.',
+                title: 'We Review Your Listing',
+                desc: 'Our team reviews submissions within 24 hours and approves listings that meet our quality standards.',
               },
               {
                 step: '3',
-                title: 'Receive Inquiries',
-                desc: 'Interested breeders send you inquiries directly. View and manage all inquiries from your dashboard.',
+                title: 'Go Live & Get Contacted',
+                desc: 'Once approved, your listing is live at dogstud.com/studs. Breeders find you and contact you directly by phone or text.',
               },
             ].map(({ step, title, desc }) => (
               <div key={step} className="flex gap-4">
@@ -94,7 +94,7 @@ export default function HowItWorksPage() {
           Browse Studs
         </Link>
         <Link
-          href="/signup"
+          href="/list-your-stud"
           className="px-5 py-2.5 text-sm font-semibold rounded-md text-white"
           style={{ backgroundColor: '#0B1F2A' }}
         >

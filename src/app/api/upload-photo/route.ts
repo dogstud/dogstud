@@ -7,8 +7,8 @@ export async function POST(req: NextRequest) {
     const file = formData.get('file') as File
     if (!file) return NextResponse.json({ error: 'No file' }, { status: 400 })
 
-    if (file.size > 8 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File too large (max 8MB)' }, { status: 400 })
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File too large (max 5MB)' }, { status: 400 })
     }
 
     const allowed = ['image/jpeg', 'image/png', 'image/webp']
@@ -22,13 +22,13 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer())
 
     const { error } = await admin.storage
-      .from('stud-photos')
+      .from('stud-images')
       .upload(filename, buffer, { contentType: file.type, upsert: false })
 
     if (error) throw error
 
     const { data: { publicUrl } } = admin.storage
-      .from('stud-photos')
+      .from('stud-images')
       .getPublicUrl(filename)
 
     return NextResponse.json({ url: publicUrl })
