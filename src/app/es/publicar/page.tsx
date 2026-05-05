@@ -21,7 +21,7 @@ export default function PublicarPage() {
         </p>
       </div>
       {/* Reuse the same submission form — fields are universal */}
-      <ListYourStudForm />
+      <ListYourStudForm locale="es" />
     </div>
   )
 }
