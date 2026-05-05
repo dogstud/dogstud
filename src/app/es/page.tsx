@@ -21,7 +21,10 @@ export const metadata: Metadata = {
   },
 }
 
-export default function SpanishHomePage() {
+import { getApprovedCount } from '@/lib/submissions'
+
+export default async function SpanishHomePage() {
+  const total = await getApprovedCount().catch(() => 0)
   return (
     <div>
       {/* HERO */}
@@ -42,7 +45,7 @@ export default function SpanishHomePage() {
               Ver Sementales Disponibles
             </Link>
             <Link
-              href="/es/registrarse"
+              href="/es/publicar"
               className="inline-block px-8 py-3.5 rounded-md text-base font-semibold transition-colors"
               style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
             >
@@ -55,7 +58,7 @@ export default function SpanishHomePage() {
       {/* TRUST BAR */}
       <div className="bg-white border-b border-gray-100 py-3 px-4 text-center">
         <p className="text-sm text-gray-500 font-medium tracking-wide">
-          ✔ Criadores Verificados  ✔ Anuncios Reales  ✔ Contacto Directo  ✔ Cobertura en México y EE.UU.
+          {total > 0 ? `✔ ${total} sementales publicados  ` : ''}✔ Contacto Directo  ✔ Sin Intermediarios  ✔ México y EE.UU.
         </p>
       </div>
 
@@ -193,11 +196,11 @@ export default function SpanishHomePage() {
             Únete a criadores de México y EE.UU. que ya usan DOGSTUD — sin intermediarios, sin comisiones. Contacto directo con otros criadores.
           </p>
           <Link
-            href="/signup"
+            href="/es/publicar"
             className="inline-block px-8 py-3.5 rounded-md text-base font-semibold transition-colors"
             style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
           >
-            Comenzar Gratis
+            Publicar mi Semental Gratis
           </Link>
         </div>
       </section>

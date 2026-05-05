@@ -28,9 +28,9 @@ export default function Navbar({ user }: NavbarProps) {
         { label: 'México 🇲🇽', href: '/es' },
       ]
 
-  const signupHref = isES ? '/es/registrarse' : '/list-your-stud'
+  const signupHref = isES ? '/es/publicar' : '/list-your-stud'
   const signinHref = '/login'
-  const signupLabel = isES ? 'Publicar mi Semental' : 'List Your Stud'
+  const signupLabel = isES ? 'Publicar Gratis' : 'List Your Stud'
   const router = useRouter()
 
   async function handleSignOut() {

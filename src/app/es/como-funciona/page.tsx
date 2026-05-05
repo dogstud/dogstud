@@ -100,7 +100,7 @@ export default function ComoFuncionaPage() {
         </div>
         <div className="text-center mt-8">
           <Link
-            href="/es/registrarse"
+            href="/es/publicar"
             className="inline-block px-6 py-3 rounded-md text-sm font-semibold text-white transition-colors"
             style={{ backgroundColor: '#1F4D3A' }}
           >
