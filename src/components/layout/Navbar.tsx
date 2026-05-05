@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import type { User } from '@supabase/supabase-js'
 
 interface NavbarProps {
@@ -13,6 +13,24 @@ interface NavbarProps {
 
 export default function Navbar({ user }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const isES = pathname?.startsWith('/es')
+
+  const nav = isES
+    ? [
+        { label: 'Ver Sementales', href: '/es/sementales' },
+        { label: 'Cómo Funciona', href: '/es/como-funciona' },
+        { label: 'EE.UU. 🇺🇸', href: '/' },
+      ]
+    : [
+        { label: 'Browse Studs', href: '/studs' },
+        { label: 'How It Works', href: '/how-it-works' },
+        { label: 'México 🇲🇽', href: '/es' },
+      ]
+
+  const signupHref = isES ? '/es/registrarse' : '/list-your-stud'
+  const signinHref = '/login'
+  const signupLabel = isES ? 'Publicar mi Semental' : 'List Your Stud'
   const router = useRouter()
 
   async function handleSignOut() {
@@ -29,7 +47,7 @@ export default function Navbar({ user }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center shrink-0">
+          <Link href={isES ? '/es' : '/'} className="flex items-center shrink-0">
             <Image
               src="/dogstud-logo.png"
               alt="DOGSTUD — Proven Dog Studs. Trusted Breeders."
@@ -42,48 +60,38 @@ export default function Navbar({ user }: NavbarProps) {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/studs" className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
-              Browse Studs
-            </Link>
-            <Link href="/how-it-works" className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
-              How It Works
-            </Link>
-            <Link href="/studs?breed=" className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
-              Breeds
-            </Link>
+            {nav.map(({ label, href }) => (
+              <Link key={href} href={href} className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
+                {label}
+              </Link>
+            ))}
           </div>
 
           {/* Auth buttons */}
           <div className="hidden md:flex items-center gap-3">
             {user ? (
               <>
-                <Link
-                  href="/dashboard"
-                  className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors"
-                >
-                  Dashboard
+                <Link href="/dashboard" className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
+                  {isES ? 'Panel' : 'Dashboard'}
                 </Link>
                 <button
                   onClick={handleSignOut}
                   className="text-sm font-medium px-4 py-2 rounded border border-gray-300 text-gray-700 hover:border-[#1F4D3A] hover:text-[#1F4D3A] transition-colors"
                 >
-                  Sign Out
+                  {isES ? 'Cerrar sesión' : 'Sign Out'}
                 </button>
               </>
             ) : (
               <>
-                <Link
-                  href="/login"
-                  className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors"
-                >
-                  Sign In
+                <Link href={signinHref} className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
+                  {isES ? 'Iniciar sesión' : 'Sign In'}
                 </Link>
                 <Link
-                  href="/signup"
-                  className="text-sm font-semibold px-4 py-2 rounded text-navy"
+                  href={signupHref}
+                  className="text-sm font-semibold px-4 py-2 rounded"
                   style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
                 >
-                  List Your Stud
+                  {signupLabel}
                 </Link>
               </>
             )}
@@ -108,27 +116,16 @@ export default function Navbar({ user }: NavbarProps) {
         {/* Mobile menu */}
         {menuOpen && (
           <div className="md:hidden border-t border-gray-100 py-4 space-y-3">
-            <Link
-              href="/studs"
-              className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              Browse Studs
-            </Link>
-            <Link
-              href="/how-it-works"
-              className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              How It Works
-            </Link>
-            <Link
-              href="/studs"
-              className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              Breeds
-            </Link>
+            {nav.map(({ label, href }) => (
+              <Link
+                key={href}
+                href={href}
+                className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                {label}
+              </Link>
+            ))}
             <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
               {user ? (
                 <>
@@ -137,31 +134,31 @@ export default function Navbar({ user }: NavbarProps) {
                     className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
                     onClick={() => setMenuOpen(false)}
                   >
-                    Dashboard
+                    {isES ? 'Panel' : 'Dashboard'}
                   </Link>
                   <button
                     onClick={() => { setMenuOpen(false); handleSignOut() }}
                     className="text-left text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
                   >
-                    Sign Out
+                    {isES ? 'Cerrar sesión' : 'Sign Out'}
                   </button>
                 </>
               ) : (
                 <>
                   <Link
-                    href="/login"
+                    href={signinHref}
                     className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
                     onClick={() => setMenuOpen(false)}
                   >
-                    Sign In
+                    {isES ? 'Iniciar sesión' : 'Sign In'}
                   </Link>
                   <Link
-                    href="/signup"
+                    href={signupHref}
                     className="inline-block text-sm font-semibold px-4 py-2 rounded text-center"
                     style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
                     onClick={() => setMenuOpen(false)}
                   >
-                    List Your Stud
+                    {signupLabel}
                   </Link>
                 </>
               )}

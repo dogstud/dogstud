@@ -37,6 +37,14 @@ export default function SignupPage() {
       return
     }
 
+    // Fire welcome email (non-blocking)
+    fetch('/api/auth/welcome', { method: 'POST' }).catch(() => {})
+
+    // Meta Pixel — track signup conversion
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'CompleteRegistration', { content_name: 'Breeder Signup' })
+    }
+
     router.push('/dashboard')
     router.refresh()
   }
@@ -52,13 +60,25 @@ export default function SignupPage() {
               DOGSTUD
             </span>
           </Link>
-          <h1 className="mt-6 text-2xl font-bold text-gray-900">Create your account</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="mt-6 text-2xl font-bold text-gray-900">List Your Stud Dog in Minutes</h1>
+          <p className="text-sm text-gray-500 mt-1 max-w-xs mx-auto">
             Already have an account?{' '}
             <Link href="/login" className="font-medium underline" style={{ color: '#1F4D3A' }}>
               Sign in
             </Link>
           </p>
+          {/* 3 core benefits */}
+          <div className="mt-4 flex flex-col gap-1.5 text-left max-w-xs mx-auto">
+            {[
+              'Exposure to breeders nationwide',
+              'Direct inquiries — no middleman',
+              'Free listing, no platform fees',
+            ].map((b) => (
+              <div key={b} className="flex items-center gap-2 text-sm text-gray-600">
+                <span className="text-[#2F7D5C] font-bold">✓</span> {b}
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">

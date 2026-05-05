@@ -21,7 +21,7 @@ export default function Footer() {
               Proven Dog Studs. Trusted Breeders.
             </p>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Connect with trusted breeders and browse proven stud listings nationwide.
+              Connect with trusted breeders and browse proven stud listings in the USA and México.
             </p>
           </div>
 
@@ -58,9 +58,14 @@ export default function Footer() {
           <p className="text-xs text-gray-400">
             &copy; {new Date().getFullYear()} DOGSTUD. All rights reserved.
           </p>
-          <p className="text-xs text-gray-400">
-            For breeders, by breeders.
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-xs text-gray-400">For breeders, by breeders.</p>
+            <div className="flex items-center gap-2 text-xs">
+              <Link href="/" className="text-gray-400 hover:text-[#2F7D5C] transition-colors">English</Link>
+              <span className="text-gray-300">|</span>
+              <Link href="/es" className="text-gray-400 hover:text-[#2F7D5C] transition-colors">Español</Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

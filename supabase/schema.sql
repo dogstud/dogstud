@@ -106,13 +106,21 @@ create policy "inquiries_owner_read" on inquiries for select using (auth.uid() =
 -- trigger: auto-create profile on signup
 create or replace function handle_new_user()
 returns trigger as $$
+declare
+  base_name text;
+  base_slug text;
 begin
+  base_name := coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1));
+  -- Lowercase BEFORE regex so uppercase letters aren't stripped
+  base_slug := regexp_replace(lower(base_name), '[^a-z0-9]+', '-', 'g');
+  -- Trim leading/trailing hyphens
+  base_slug := trim(both '-' from base_slug);
+
   insert into public.profiles (user_id, display_name, slug)
   values (
     new.id,
-    coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1)),
-    lower(regexp_replace(coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1)), '[^a-z0-9]+', '-', 'g'))
-    || '-' || substr(new.id::text, 1, 8)
+    base_name,
+    base_slug || '-' || substr(new.id::text, 1, 8)
   );
   return new;
 end;

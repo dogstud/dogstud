@@ -27,9 +27,21 @@ export const metadata: Metadata = {
     title: 'Dog Stud Services | Find Stud Dogs Near You',
     description: 'Browse stud dogs near you. Connect with trusted breeders and find proven studs for breeding.',
   },
-  icons: { icon: '/favicon.png' },
+  icons: {
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/favicon-192.png',
+  },
   alternates: {
     canonical: 'https://dogstud.com',
+    languages: {
+      'en-US': 'https://dogstud.com',
+      'es-MX': 'https://dogstud.com/es',
+      'x-default': 'https://dogstud.com',
+    },
   },
 }
 
@@ -60,6 +72,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         name: 'DOGSTUD',
         url: 'https://dogstud.com',
         description: 'Proven Dog Studs. Trusted Breeders.',
+        description_es: 'Sementales caninos probados. Criadores de confianza en EE.UU. y México.',
+        areaServed: ['US', 'MX'],
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'customer support',
@@ -72,10 +86,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        <link rel="alternate" hrefLang="en" href="https://dogstud.com" />
+        <link rel="alternate" hrefLang="es-MX" href="https://dogstud.com/es" />
+        <link rel="alternate" hrefLang="x-default" href="https://dogstud.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Meta Pixel */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window,document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '1646419166390228');
+          fbq('track', 'PageView');
+        ` }} />
+        <noscript><img height="1" width="1" style={{display:'none'}} src="https://www.facebook.com/tr?id=1646419166390228&ev=PageView&noscript=1" alt="" /></noscript>
       </head>
       <body>
         <Navbar user={user} />

@@ -22,7 +22,9 @@ export interface StudListing {
   age?: number | null
   city: string
   state: string
+  country_code?: string | null
   stud_fee?: number | null
+  currency?: 'USD' | 'MXN' | null
   contact_for_fee: boolean
   short_summary: string
   description: string
@@ -76,7 +78,9 @@ export interface CreateListingInput {
   age?: number
   city: string
   state: string
+  country_code?: string
   stud_fee?: number
+  currency?: 'USD' | 'MXN'
   contact_for_fee: boolean
   short_summary: string
   description: string

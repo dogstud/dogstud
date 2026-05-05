@@ -1,22 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
-// In-memory rate limit: max 3 per IP per hour
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = rateLimitMap.get(ip)
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + 3_600_000 })
-    return true
-  }
-
-  if (entry.count >= 3) return false
-  entry.count++
-  return true
-}
+const RATE_LIMIT = 3
+const RATE_WINDOW_MS = 60 * 60 * 1000 // 1 hour
 
 function getClientIp(request: NextRequest): string {
   return (
@@ -26,10 +12,24 @@ function getClientIp(request: NextRequest): string {
   )
 }
 
+async function checkRateLimit(ip: string): Promise<boolean> {
+  // Persistent rate limiting via DB — survives serverless cold starts
+  const admin = createAdminClient()
+  const since = new Date(Date.now() - RATE_WINDOW_MS).toISOString()
+  const { count, error } = await admin
+    .from('inquiries')
+    .select('*', { count: 'exact', head: true })
+    .eq('ip_address', ip)
+    .gte('created_at', since)
+
+  if (error) return true // fail open — don't block on DB error
+  return (count ?? 0) < RATE_LIMIT
+}
+
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request)
 
-  if (!checkRateLimit(ip)) {
+  if (!(await checkRateLimit(ip))) {
     return NextResponse.json(
       { error: 'Too many requests. Please wait before sending another inquiry.' },
       { status: 429 }
@@ -79,6 +79,46 @@ export async function POST(request: NextRequest) {
   if (error) {
     console.error('Inquiry insert error:', error)
     return NextResponse.json({ error: 'Failed to send inquiry' }, { status: 500 })
+  }
+
+  // Email notification to breeder via Resend (non-blocking)
+  const resendKey = process.env.RESEND_API_KEY
+  if (resendKey) {
+    // Look up breeder email
+    const { data: breederData } = await admin.auth.admin.getUserById(String(breeder_user_id))
+    const breederEmail = breederData?.user?.email
+    if (breederEmail) {
+      const listingSlug = await admin
+        .from('stud_listings')
+        .select('dog_name, slug')
+        .eq('id', String(listing_id))
+        .single()
+      const dogName = listingSlug.data?.dog_name ?? 'your stud'
+      const listingUrl = `https://dogstud.com/studs/${listingSlug.data?.slug ?? ''}`
+
+      fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'DOGSTUD <noreply@dogstud.com>',
+          to: [breederEmail],
+          subject: `New inquiry for ${dogName}`,
+          html: `
+            <p>You have a new inquiry for <strong>${dogName}</strong>.</p>
+            <p><strong>From:</strong> ${String(sender_name)} (${String(sender_email)})</p>
+            ${sender_phone ? `<p><strong>Phone:</strong> ${String(sender_phone)}</p>` : ''}
+            <p><strong>Message:</strong></p>
+            <blockquote style="border-left:3px solid #2F7D5C;padding-left:12px;color:#444;">
+              ${String(message).replace(/\n/g, '<br/>')}
+            </blockquote>
+            <p><a href="${listingUrl}" style="color:#2F7D5C;">View listing on DOGSTUD</a></p>
+          `,
+        }),
+      }).catch((err) => console.error('Email notification failed:', err))
+    }
   }
 
   return NextResponse.json({ ok: true })
