@@ -10,8 +10,8 @@
 
 const https = require('https')
 
-const SUPABASE_URL = 'https://sxlewfgmkzhhawxugrrt.supabase.co'
-const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4bGV3Zmdta3poaGF3eHVncnJ0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTY3NTY2OCwiZXhwIjoyMDkxMjUxNjY4fQ.dAwoU4wLAqx5I8SxXEru4fozzZm9ip4nqfyjHFbJoDI'
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://sxlewfgmkzhhawxugrrt.supabase.co'
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 const args = process.argv.slice(2)
 const FORCE = args.includes('--force')
