@@ -86,8 +86,8 @@ export default function PrivacyPage() {
           <h2 className="text-base font-semibold text-gray-900 mb-2">8. Listing Removal</h2>
           <p>
             To remove your listing or have your submitted data deleted, email us at{' '}
-            <a href="mailto:team@dogstud.com" className="underline">
-              team@dogstud.com
+            <a href="mailto:hello@dogstud.com" className="underline">
+              hello@dogstud.com
             </a>
             . We will process your request within 30 days. You can also use the edit link sent to
             your email at the time of submission.
@@ -106,8 +106,8 @@ export default function PrivacyPage() {
           <h2 className="text-base font-semibold text-gray-900 mb-2">10. Contact</h2>
           <p>
             Privacy questions? Email us at{' '}
-            <a href="mailto:team@dogstud.com" className="underline">
-              team@dogstud.com
+            <a href="mailto:hello@dogstud.com" className="underline">
+              hello@dogstud.com
             </a>
             .
           </p>

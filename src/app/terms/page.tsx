@@ -90,8 +90,8 @@ export default function TermsPage() {
           <h2 className="text-base font-semibold text-gray-900 mb-2">9. Contact</h2>
           <p>
             Questions about these Terms? Email us at{' '}
-            <a href="mailto:team@dogstud.com" className="underline">
-              team@dogstud.com
+            <a href="mailto:hello@dogstud.com" className="underline">
+              hello@dogstud.com
             </a>
             .
           </p>

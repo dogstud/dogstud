@@ -6,12 +6,9 @@ function sendEmail(to: string, subject: string, text: string): Promise<void> {
   return new Promise((resolve) => {
     const apiKey = process.env.RESEND_API_KEY
     if (!apiKey) { resolve(); return }
-    const body = JSON.stringify({
-      from: 'DogStud <team@dogstud.com>',
-      to,
-      subject,
-      text,
-    })
+    const fromEmail = process.env.FROM_EMAIL || 'hello@dogstud.com'
+    const from = fromEmail.includes('<') ? fromEmail : `DogStud <${fromEmail}>`
+    const body = JSON.stringify({ from, to, subject, text })
     const req = https.request(
       {
         hostname: 'api.resend.com',
@@ -78,8 +75,8 @@ export async function POST(req: NextRequest) {
     if (error) throw error
 
     // Send email notifications (fire and forget)
-    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'brian@mybabypuppy.com'
-    const fromEmail = process.env.FROM_EMAIL || 'team@dogstud.com'
+    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'hello@dogstud.com'
+    const fromEmail = process.env.FROM_EMAIL || 'hello@dogstud.com'
     const timestamp = new Date().toISOString()
     const editLink = `https://dogstud.com/edit-listing/${data.edit_token}`
     const adminReviewLink = `https://dogstud.com/admin?token=ds-admin-2025`
@@ -113,7 +110,7 @@ We typically approve listings within 24 hours. Once approved, your listing will 
 Save this link to edit your listing at any time:
 ${editLink}
 
-Questions? Email us at team@dogstud.com
+Questions? Email us at hello@dogstud.com
 
 — The DogStud Team`
       ),
