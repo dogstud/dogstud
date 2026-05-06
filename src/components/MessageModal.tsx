@@ -87,23 +87,15 @@ export default function MessageModal({ studId, studName, ownerId, breed, onClose
             </div>
           ) : !user ? (
             <div className="text-center py-6">
-              <div className="text-3xl mb-3">🔒</div>
-              <h3 className="text-lg font-bold text-[#1E2A38]">Sign in to message</h3>
-              <p className="text-sm text-gray-500 mt-1 mb-4">Create a free account to contact stud owners directly.</p>
-              <div className="flex flex-col gap-2">
-                <a
-                  href="/auth/signin"
-                  className="block bg-[#1E2A38] text-white text-center font-semibold py-2.5 rounded-lg hover:bg-[#1E2A38]"
-                >
-                  Sign In
-                </a>
-                <a
-                  href="/auth/signup"
-                  className="block border border-[#C6922F] text-[#C6922F] text-center font-semibold py-2.5 rounded-lg hover:bg-[#FBF4E9]"
-                >
-                  Create Free Account
-                </a>
-              </div>
+              <div className="text-3xl mb-3">👋</div>
+              <h3 className="text-lg font-bold text-[#1E2A38]">Contact this stud owner</h3>
+              <p className="text-sm text-gray-500 mt-1 mb-4">View the listing to call or text the owner directly — no account needed.</p>
+              <a
+                href="/studs"
+                className="block bg-[#1F4D3A] text-white text-center font-semibold py-2.5 rounded-lg"
+              >
+                Browse Listings
+              </a>
             </div>
           ) : (
             <>

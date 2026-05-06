@@ -29,7 +29,6 @@ export default function Navbar({ user }: NavbarProps) {
       ]
 
   const signupHref = isES ? '/es/publicar' : '/list-your-stud'
-  const signinHref = '/login'
   const signupLabel = isES ? 'Publicar Gratis' : 'List Your Stud'
   const router = useRouter()
 
@@ -82,18 +81,13 @@ export default function Navbar({ user }: NavbarProps) {
                 </button>
               </>
             ) : (
-              <>
-                <Link href={signinHref} className="text-gray-600 hover:text-[#1F4D3A] text-sm font-medium transition-colors">
-                  {isES ? 'Iniciar sesión' : 'Sign In'}
-                </Link>
-                <Link
-                  href={signupHref}
-                  className="text-sm font-semibold px-4 py-2 rounded"
-                  style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
-                >
-                  {signupLabel}
-                </Link>
-              </>
+              <Link
+                href={signupHref}
+                className="text-sm font-semibold px-4 py-2 rounded"
+                style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
+              >
+                {signupLabel}
+              </Link>
             )}
           </div>
 
@@ -144,23 +138,14 @@ export default function Navbar({ user }: NavbarProps) {
                   </button>
                 </>
               ) : (
-                <>
-                  <Link
-                    href={signinHref}
-                    className="block text-gray-600 hover:text-[#1F4D3A] text-sm font-medium py-2"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {isES ? 'Iniciar sesión' : 'Sign In'}
-                  </Link>
-                  <Link
-                    href={signupHref}
-                    className="inline-block text-sm font-semibold px-4 py-2 rounded text-center"
-                    style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {signupLabel}
-                  </Link>
-                </>
+                <Link
+                  href={signupHref}
+                  className="inline-block text-sm font-semibold px-4 py-2 rounded text-center"
+                  style={{ backgroundColor: '#2F7D5C', color: '#ffffff' }}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {signupLabel}
+                </Link>
               )}
             </div>
           </div>

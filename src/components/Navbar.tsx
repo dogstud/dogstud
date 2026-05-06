@@ -76,7 +76,7 @@ export default function Navbar() {
               <Link href="/list" style={{backgroundColor:'#C6922F', color:'white', fontSize:'14px', fontWeight:700, padding:'10px 20px', borderRadius:'10px', textDecoration:'none', boxShadow:'0 2px 8px rgba(198,146,47,0.4)'}}>
                 List Your Stud (Free)
               </Link>
-              <Link href="/auth/signin" style={{color:'rgba(255,255,255,0.75)', fontSize:'14px', fontWeight:500, padding:'10px 16px', borderRadius:'10px', textDecoration:'none', border:'1px solid rgba(255,255,255,0.2)'}}>
+              <Link href="/list-your-stud" style={{color:'rgba(255,255,255,0.75)', fontSize:'14px', fontWeight:500, padding:'10px 16px', borderRadius:'10px', textDecoration:'none', border:'1px solid rgba(255,255,255,0.2)'}}>
                 Sign In
               </Link>
             </>
@@ -112,7 +112,7 @@ export default function Navbar() {
           ) : (
             <>
               <Link href="/list" style={{backgroundColor:'#C6922F', color:'white', fontSize:'14px', fontWeight:700, padding:'12px 16px', borderRadius:'10px', textDecoration:'none', textAlign:'center', marginTop:'8px'}} onClick={() => setMenuOpen(false)}>List Your Stud (Free)</Link>
-              <Link href="/auth/signin" style={{color:'rgba(255,255,255,0.8)', fontSize:'14px', fontWeight:500, padding:'10px 0', textDecoration:'none', textAlign:'center'}} onClick={() => setMenuOpen(false)}>Sign In</Link>
+              <Link href="/list-your-stud" style={{color:'rgba(255,255,255,0.8)', fontSize:'14px', fontWeight:500, padding:'10px 0', textDecoration:'none', textAlign:'center'}} onClick={() => setMenuOpen(false)}>Sign In</Link>
             </>
           )}
         </div>
